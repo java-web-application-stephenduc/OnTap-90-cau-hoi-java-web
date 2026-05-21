@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Tap Phong Van Spring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+::selection{background:#6366f1;color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:3px}
+
+body{
+  font-family:'Inter','Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  min-height:100vh;
+  padding:30px 20px;
+  color:#1e293b
+}
+
+.container{max-width:900px;margin:0 auto}
+
+/* HEADER */
+.header{
+  text-align:center;
+  margin-bottom:32px;
+  position:relative
+}
+.header h1{
+  font-size:32px;
+  font-weight:800;
+  background:linear-gradient(135deg,#e0e7ff,#a5b4fc,#818cf8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-0.5px
+}
+.header .subtitle{
+  color:#a5b4fc;
+  font-size:14px;
+  margin-top:6px;
+  font-weight:500;
+  letter-spacing:0.3px
+}
+.header .subtitle span{
+  display:inline-block;
+  background:rgba(99,102,241,.2);
+  padding:2px 12px;
+  border-radius:20px;
+  color:#c7d2fe;
+  font-size:13px
+}
+
+/* MODE TOGGLE */
+.mode-toggle{
+  display:flex;
+  justify-content:center;
+  gap:4px;
+  margin-bottom:28px;
+  background:rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:4px;
+  max-width:340px;
+  margin-left:auto;
+  margin-right:auto;
+  backdrop-filter:blur(8px)
+}
+.mode-btn{
+  padding:10px 28px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:14px;
+  background:transparent;
+  color:#a5b4fc;
+  transition:all .25s ease;
+  flex:1;
+  font-family:inherit;
+  letter-spacing:0.2px
+}
+.mode-btn:hover{color:#e0e7ff}
+.mode-btn.active{
+  background:#6366f1;
+  color:#fff;
+  box-shadow:0 4px 15px rgba(99,102,241,.4)
+}
+
+/* SEARCH */
+.search-box{
+  display:flex;
+  gap:8px;
+  margin-bottom:24px;
+  max-width:500px;
+  margin-left:auto;
+  margin-right:auto
+}
+.search-box input{
+  flex:1;
+  padding:12px 18px;
+  border:2px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  font-size:14px;
+  background:rgba(255,255,255,.07);
+  color:#e0e7ff;
+  font-family:inherit;
+  transition:all .25s ease;
+  outline:none
+}
+.search-box input::placeholder{color:#6b7280}
+.search-box input:focus{border-color:#818cf8;background:rgba(255,255,255,.1);box-shadow:0 0 0 4px rgba(99,102,241,.15)}
+.search-box button{
+  padding:12px 24px;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:14px;
+  transition:all .25s ease;
+  font-family:inherit
+}
+.search-box button:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+
+/* LIST MODE */
+#listMode{animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.section{
+  margin-bottom:20px;
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(20px);
+  box-shadow:0 8px 32px rgba(0,0,0,.2);
+  transition:box-shadow .3s ease
+}
+.section:hover{box-shadow:0 12px 40px rgba(0,0,0,.25)}
+
+.section-header{
+  background:linear-gradient(135deg,#1e1b4b,#312e81);
+  color:#e0e7ff;
+  padding:18px 22px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:16px;
+  font-weight:600;
+  transition:all .25s ease;
+  border:none;
+  width:100%;
+  text-align:left;
+  font-family:inherit;
+  letter-spacing:0.2px
+}
+.section-header:hover{background:linear-gradient(135deg,#312e81,#3730a3)}
+.section-header .section-count{
+  background:rgba(255,255,255,.12);
+  padding:2px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:500;
+  color:#a5b4fc
+}
+.section-header .arrow{
+  font-size:12px;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  color:#818cf8;
+  margin-left:12px;
+  flex-shrink:0
+}
+.section-header.open .arrow{transform:rotate(180deg)}
+
+.section-body{display:none;animation:fadeUp .3s ease}
+.section-body.open{display:block}
+
+.question{
+  border-bottom:1px solid #e9eef4;
+  transition:all .2s ease
+}
+.question:last-child{border-bottom:none}
+.question:hover{background:#f8faff}
+
+.q-btn{
+  width:100%;
+  padding:16px 22px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  font-size:14px;
+  color:#1e293b;
+  transition:all .2s ease;
+  line-height:1.5;
+  font-family:inherit
+}
+.q-btn .num{
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+  color:#fff;
+  border-radius:50%;
+  min-width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(99,102,241,.3)
+}
+.q-btn .q-text{flex:1;font-weight:500}
+.q-btn .q-icon{
+  font-size:11px;
+  color:#94a3b8;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0
+}
+.q-btn.open .q-icon{transform:rotate(180deg);color:#6366f1}
+
+.answer{
+  padding:0 22px 20px 66px;
+  display:none;
+  font-size:14px;
+  line-height:1.8;
+  color:#475569;
+  animation:fadeIn .3s ease
+}
+.answer.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.answer strong{color:#4f46e5}
+.answer br{display:block;margin:4px 0}
+
+/* FLASH CARD MODE */
+.flash-card{
+  display:none;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(20px);
+  border-radius:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  padding:40px;
+  margin:16px 0;
+  min-height:380px;
+  position:relative;
+  animation:fadeUp .4s ease;
+  border:1px solid rgba(255,255,255,.2)
+}
+.flash-card.active{display:block}
+
+.fc-progress{
+  width:100%;
+  height:4px;
+  background:#e9eef4;
+  border-radius:2px;
+  margin-bottom:28px;
+  overflow:hidden
+}
+.fc-progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#6366f1,#818cf8);
+  border-radius:2px;
+  transition:width .4s cubic-bezier(.4,0,.2,1)
+}
+
+.flash-card .fc-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+  flex-wrap:wrap;
+  gap:8px
+}
+.flash-card .fc-section{
+  font-size:12px;
+  font-weight:600;
+  color:#6366f1;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  background:rgba(99,102,241,.1);
+  padding:4px 14px;
+  border-radius:20px
+}
+.flash-card .fc-num{
+  font-size:13px;
+  font-weight:500;
+  color:#94a3b8;
+  background:#f1f5f9;
+  padding:4px 14px;
+  border-radius:20px
+}
+
+.flash-card .fc-question{
+  font-size:20px;
+  font-weight:700;
+  color:#1e1b4b;
+  margin:24px 0;
+  line-height:1.6;
+  min-height:80px;
+  padding:20px;
+  background:#f8faff;
+  border-radius:16px;
+  border-left:4px solid #6366f1
+}
+
+.flash-card .fc-answer{
+  font-size:15px;
+  color:#475569;
+  line-height:1.8;
+  display:none;
+  max-height:400px;
+  overflow-y:auto;
+  padding:20px;
+  background:#fafbfe;
+  border-radius:16px;
+  border:1px solid #e9eef4;
+  animation:fadeIn .35s ease
+}
+.flash-card .fc-answer.show{display:block}
+.flash-card .fc-answer strong{color:#4f46e5}
+
+.flip-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:24px auto 0;
+  padding:14px 44px;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
+  transition:all .25s ease;
+  font-family:inherit
+}
+.flip-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.35)}
+.flip-btn:active{transform:translateY(0)}
+.flip-btn svg{width:18px;height:18px;transition:transform .3s ease}
+.flip-btn.flipped svg{transform:rotateX(180deg)}
+
+.card-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:24px;
+  gap:12px
+}
+.card-nav button{
+  padding:12px 28px;
+  border:2px solid #e9eef4;
+  border-radius:12px;
+  background:#fff;
+  color:#1e293b;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  transition:all .25s ease;
+  font-family:inherit
+}
+.card-nav button:hover:not(:disabled){
+  border-color:#6366f1;
+  color:#6366f1;
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(99,102,241,.15)
+}
+.card-nav button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  background:#f8fafc;
+  border-color:#e9eef4;
+  color:#94a3b8
+}
+.card-nav .counter{
+  font-size:14px;
+  font-weight:600;
+  color:#6366f1;
+  background:rgba(99,102,241,.1);
+  padding:8px 20px;
+  border-radius:20px;
+  min-width:80px;
+  text-align:center
+}
+
+.fc-filter{
+  display:flex;
+  gap:10px;
+  margin-bottom:24px;
+  flex-wrap:wrap
+}
+.fc-filter label{
+  font-size:13px;
+  font-weight:600;
+  color:#e0e7ff;
+  align-self:center
+}
+.fc-filter select{
+  padding:10px 16px;
+  border:2px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  font-size:13px;
+  background:rgba(255,255,255,.07);
+  color:#e0e7ff;
+  font-family:inherit;
+  cursor:pointer;
+  outline:none;
+  transition:all .25s ease;
+  min-width:200px;
+  font-weight:500
+}
+.fc-filter select:focus{border-color:#818cf8}
+.fc-filter select option{background:#1e1b4b;color:#e0e7ff}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  body{padding:16px 12px}
+  .container{max-width:100%}
+  .header h1{font-size:24px}
+  .flash-card{padding:24px 18px;border-radius:18px}
+  .flash-card .fc-question{font-size:17px;padding:16px;margin:16px 0}
+  .flash-card .fc-answer{font-size:14px;padding:16px}
+  .answer{padding-left:20px;font-size:13px}
+  .q-btn{padding:14px 16px;gap:10px}
+  .q-btn .num{min-width:26px;height:26px;font-size:11px}
+  .card-nav{flex-wrap:wrap;justify-content:center}
+  .card-nav button{padding:10px 20px;font-size:13px}
+  .fc-filter select{min-width:150px}
+  .fc-filter{justify-content:center}
+  .search-box input{font-size:13px}
+}
+@media(max-width:400px){
+  .header h1{font-size:20px}
+  .mode-btn{padding:8px 16px;font-size:13px}
+  .mode-toggle{gap:2px;padding:3px}
+  .section-header{font-size:14px;padding:14px 16px}
+  .flash-card .fc-question{font-size:15px}
+  .flip-btn{padding:12px 28px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>On Tập Phỏng Vấn Spring</h1>
+    <p class="subtitle"><span>90 câu hỏi từ cơ bản → nâng cao</span></p>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('list')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Danh sách
+    </button>
+    <button class="mode-btn" onclick="setMode('flash')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Flash Card
+    </button>
+  </div>
+
+  <div class="search-box" id="searchBox">
+    <input type="text" id="searchInput" placeholder="Tìm câu hỏi..." oninput="filterQuestions()">
+    <button onclick="filterQuestions()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Tìm
+    </button>
+  </div>
+
+  <div id="listMode"></div>
+
+  <div id="flashMode" class="flash-card">
+    <div class="fc-filter">
+      <select id="fcSection" onchange="applyFlashFilter()">
+        <option value="all">Tất cả phần</option>
+      </select>
+    </div>
+    <div class="fc-progress"><div class="fc-progress-bar" id="fcProgressBar"></div></div>
+    <div class="fc-top">
+      <div class="fc-section" id="fcSectionLabel">Phần 1 - Cơ bản</div>
+      <div class="fc-num" id="fcNum">1 / 30</div>
+    </div>
+    <div class="fc-question" id="fcQuestion"></div>
+    <div class="fc-answer" id="fcAnswer"></div>
+    <button class="flip-btn" id="flipBtn" onclick="flipCard()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      Lật thẻ
+    </button>
+    <div class="card-nav">
+      <button id="fcPrev" onclick="prevCard()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><polyline points="15 18 9 12 15 6"/></svg>
+        Trước
+      </button>
+      <span class="counter" id="fcCounter">0 / 0</span>
+      <button id="fcNext" onclick="nextCard()">
+        Sau
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = [
+  {section:"PHẦN 1: CƠ BẢN", qs:[
+    {q:"Spring Framework là gì?", a:"Spring Framework là một nền tảng (framework) mã nguồn mở cho các ứng dụng Java, được phát triển bởi Rod Johnson. Nó cung cấp giải pháp toàn diện cho phát triển ứng dụng enterprise với các tính năng chính: IoC Container, AOP, Spring MVC, Spring Data, Spring Security. Spring giúp giảm coupling, dễ kiểm thử và bảo trì."},
+    {q:"IoC (Inversion of Control) là gì?", a:"IoC là nguyên lý đảo ngược điều khiển: thay vì đối tượng tự tạo dependency của mình, nó được container (Spring IoC Container) cung cấp dependency từ bên ngoài. Điều này giảm sự phụ thuộc trực tiếp, tăng tính linh hoạt và dễ kiểm thử."},
+    {q:"Dependency Injection (DI) là gì?", a:"DI là một pattern cụ thể hóa của IoC, nơi các dependency được 'tiêm' (inject) vào đối tượng thay vì đối tượng tự tạo. Có 3 cách DI: Setter Injection, Constructor Injection, Field Injection. Spring khuyến khích Constructor Injection vì tạo được immutable object và dễ test."},
+    {q:"Bean trong Spring là gì?", a:"Bean là các đối tượng được Spring IoC Container quản lý. Bean được tạo, cấu hình và quản lý vòng đời bởi Spring Container. Có thể khai báo Bean qua @Component, @Service, @Repository, @Controller hoặc @Bean trong @Configuration."},
+    {q:"MVC trong Spring MVC viết tắt của những từ nào? Vai trò từng thành phần?", a:"MVC = Model - View - Controller.<br>- <strong>Model</strong>: chứa dữ liệu và logic nghiệp vụ (Service, Repository, Entity).<br>- <strong>View</strong>: hiển thị dữ liệu (JSP, Thymeleaf).<br>- <strong>Controller</strong>: nhận request, gọi Service, trả về Model và View phù hợp."},
+    {q:"JSP là gì?", a:"JSP (JavaServer Pages) là công nghệ phía server cho phép viết HTML kết hợp code Java bằng các thẻ &lt;% %&gt;. JSP giúp tạo trang web động. Thực chất JSP được biên dịch thành Servlet rồi mới chạy."},
+    {q:"Vòng đời của một trang JSP gồm những bước nào?", a:"1. Translation: file .jsp thành .java (Servlet).<br>2. Compilation: file .java thành .class.<br>3. Loading: ClassLoader load Servlet.<br>4. Instantiation: tạo instance.<br>5. Initialization: gọi jspInit().<br>6. Request Processing: gọi _jspService() cho mỗi request.<br>7. Destruction: gọi jspDestroy() khi shutdown.<br>Lần đầu tiên truy cập JSP thường chậm vì phải qua các bước 1-5."},
+    {q:"JSTL là gì? Tại sao nên dùng JSTL?", a:"JSTL (JavaServer Pages Standard Tag Library) là thư viện thẻ chuẩn cho JSP. Nên dùng vì:<br>- Giảm code Java trong JSP, tuân thủ MVC.<br>- Cung cấp thẻ mạnh mẽ cho vòng lặp (&lt;c:forEach&gt;), rẽ nhánh (&lt;c:if&gt;, &lt;c:choose&gt;), định dạng (&lt;fmt:formatDate&gt;).<br>- Tái sử dụng cao."},
+    {q:"Các Annotation cơ bản để đánh dấu một lớp là Bean?", a:"@Component, @Service, @Repository, @Controller, @RestController, @Configuration, @Bean (dùng trong method của @Configuration). Các annotation này cho phép Spring tự động detect và quản lý Bean qua component scanning."},
+    {q:"Sự khác biệt giữa @GetMapping và @PostMapping?", a:"@GetMapping xử lý HTTP GET request (lấy dữ liệu, không thay đổi state). @PostMapping xử lý HTTP POST request (gửi dữ liệu, tạo mới resource). Cả hai đều là shortcut của @RequestMapping với method tương ứng."},
+    {q:"ViewResolver trong Spring MVC có tác dụng gì?", a:"ViewResolver chịu trách nhiệm ánh xạ tên View (String trả về từ Controller) thành đối tượng View thực tế. Ví dụ: InternalResourceViewResolver ánh xạ 'home' thành /WEB-INF/views/home.jsp. ThymeleafViewResolver ánh xạ sang file .html."},
+    {q:"Thymeleaf là gì?", a:"Thymeleaf là một template engine hiện đại cho Java, cho phép tạo HTML động. Ưu điểm nổi bật: là Natural Template (file HTML vẫn preview được khi mở trên browser mà không cần server), cú pháp thân thiện, tích hợp tốt với Spring MVC."},
+    {q:"Data Binding trong Spring MVC là gì?", a:"Data Binding là cơ chế tự động ánh xạ các tham số request (form fields, query params) vào các thuộc tính của đối tượng Java (DTO/Model). Spring sử dụng PropertyEditor và Converter để chuyển đổi kiểu dữ liệu tự động."},
+    {q:"@ModelAttribute dùng để làm gì?", a:"@ModelAttribute gắn một đối tượng vào Model để có thể truy cập trong View. Có 2 cách dùng: (1) Ở method: thêm dữ liệu vào Model trước khi bất kỳ method @RequestMapping nào chạy. (2) Ở parameter: bind dữ liệu từ form vào đối tượng."},
+    {q:"Lớp nào xử lý upload file trong Spring?", a:"MultipartFile - lớp trong Spring đại diện cho file được upload. Trong Spring Boot, chỉ cần khai báo @RequestParam('file') MultipartFile file trong Controller. Cấu hình kích thước tối đa qua spring.servlet.multipart.max-file-size."},
+    {q:"Bean Validation là gì?", a:"Bean Validation (JSR 380 / Jakarta Bean Validation) là spec cho phép khai báo validation rules qua annotation như @NotNull, @Size, @Email trên các field của POJO. Spring Boot tích hợp sẵn Hibernate Validator (implementation)."},
+    {q:"BindingResult trong form validation có vai trò gì?", a:"BindingResult giữ kết quả validation. Nó chứa danh sách lỗi (FieldError) nếu dữ liệu không hợp lệ. BindingResult phải đứng ngay sau @Valid/@Validated trong tham số method. Giúp lấy lỗi và hiển thị trên View mà không throw Exception."},
+    {q:"Sự khác biệt cơ bản giữa Session và Cookie?", a:"- <strong>Cookie</strong>: lưu ở client (trình duyệt), dung lượng nhỏ (4KB), dễ bị đánh cắp, tự động gửi trong mỗi request.<br>- <strong>Session</strong>: lưu ở server, dung lượng lớn, an toàn hơn, thời gian sống do server quản lý. Session ID thường được lưu trong Cookie để nhận diện."},
+    {q:"I18N trong lập trình web là gì?", a:"I18N (Internationalization) là quá trình thiết kế ứng dụng để hỗ trợ nhiều ngôn ngữ và vùng miền. Spring MVC sử dụng LocaleResolver + ResourceBundleMessageSource, các file messages.properties (messages_en.properties, messages_vi.properties) để chứa chuỗi theo từng ngôn ngữ."},
+    {q:"Spring Boot là gì? Khác biệt so với Spring MVC thuần?", a:"Spring Boot là extension của Spring giúp tạo ứng dụng độc lập với cấu hình tối thiểu. Khác biệt: (1) Auto-Configuration, (2) Embedded server (Tomcat, Jetty), (3) Starter dependencies, (4) Spring Initializr, (5) application.properties thay cho XML config."},
+    {q:"Spring Initializr là gì?", a:"Spring Initializr (start.spring.io) là công cụ web giúp tạo nhanh dự án Spring Boot. Người dùng chọn: ngôn ngữ, phiên bản Spring Boot, dependencies (Web, JPA, Security...), và tải về project có sẵn cấu hình pom.xml và main class."},
+    {q:"ORM là gì? Giải quyết vấn đề gì?", a:"ORM (Object-Relational Mapping) giải quyết vấn đề 'Impedance Mismatch' giữa lập trình OOP và CSDL quan hệ. ORM maps Class -> Table, Object -> Row, Field -> Column. Giúp thao tác database bằng code Java thay vì viết SQL thuần."},
+    {q:"Hibernate là gì?", a:"Hibernate là ORM framework phổ biến nhất cho Java (JPA implementation). Cung cấp: mapping entity-table, HQL, caching, lazy loading, transaction management. Giúp lập trình viên thao tác database bằng cách gọi method Java thay vì SQL."},
+    {q:"Entity trong Hibernate là gì?", a:"Entity là POJO được đánh dấu bằng @Entity, ánh xạ tới một bảng trong database. Mỗi instance của Entity tương ứng một dòng trong bảng. Entity cần có @Id (primary key) và một no-arg constructor."},
+    {q:"Khác biệt giữa HQL và Native Query?", a:"- <strong>HQL</strong>: truy vấn theo entity và thuộc tính Java, database-independent, kiểm tra được mapping.<br>- <strong>Native Query</strong>: viết SQL thuần theo tên bảng và cột trong DB, tối ưu hơn cho câu query phức tạp, nhưng phụ thuộc database."},
+    {q:"Transaction là gì?", a:"Transaction là một nhóm các thao tác CSDL được thực hiện như một đơn vị nguyên tử. Transaction đảm bảo tính ACID: Atomicity (nguyên tử), Consistency (nhất quán), Isolation (cô lập), Durability (bền vững)."},
+    {q:"Mục đích của Spring Data JPA?", a:"Spring Data JPA là abstract layer trên JPA, giúp giảm boilerplate code. Chỉ cần tạo interface extends JpaRepository, Spring sẽ tự động implement các phương thức CRUD, pagination, sorting mà không cần viết code."},
+    {q:"Method Query trong Spring Data JPA là gì?", a:"Method Query là cơ chế sinh truy vấn tự động dựa trên tên method. VD: findByEmail(String email) -> SELECT * FROM entity WHERE email = ?. Spring Data JPA phân tích tên method để tạo JPQL tương ứng."},
+    {q:"So sánh @RequestParam và @PathVariable?", a:"- <strong>@RequestParam</strong>: lấy query parameter (vd: /api/users?id=5).<br>- <strong>@PathVariable</strong>: lấy giá trị từ URI template (vd: /api/users/{id}).<br>Cả hai đều dùng để lấy dữ liệu từ request URL."},
+    {q:"ModelMap và ModelAndView khác nhau ở đâu?", a:"- <strong>ModelMap</strong>: chỉ chứa dữ liệu, View name do String trả về của method Controller quyết định.<br>- <strong>ModelAndView</strong>: chứa cả Model và View trong một đối tượng, method trả về ModelAndView.<br>ModelMap là cách tiếp cận hiện đại hơn (loose coupling)."}
+  ]},
+  {section:"PHẦN 2: KHÁ", qs:[
+    {q:"Các phạm vi hoạt động (Scope) của Bean? Mặc định là gì?", a:"Các scope: <strong>Singleton</strong> (mặc định): 1 instance / container, dùng chung cho mọi request.<br><strong>Prototype</strong>: tạo mới mỗi lần getBean/inject.<br><strong>Request</strong>: 1 instance / HTTP request (Web).<br><strong>Session</strong>: 1 instance / HTTP session (Web).<br><strong>Application</strong>: 1 instance / ServletContext (Web).<br><strong>WebSocket</strong>: 1 instance / WebSocket session."},
+    {q:"Phân biệt @Component, @Service, @Repository?", a:"Cả 3 đều là stereotype annotation, đều cho Spring biết đây là Bean. Nhưng:<br>- <strong>@Component</strong>: generic, dùng cho bất kỳ lớp nào.<br>- <strong>@Service</strong>: tầng business logic, semantic rõ ràng.<br>- <strong>@Repository</strong>: tầng DAO, Spring thêm hỗ trợ translate exception (PersistenceExceptionTranslationPostProcessor)."},
+    {q:"Spring biết inject Bean nào khi có 2 class cùng implement 1 Interface?", a:"Spring gặp NoUniqueBeanDefinitionException. Các cách xử lý:<br>1. <strong>@Primary</strong>: đánh dấu Bean ưu tiên.<br>2. <strong>@Qualifier('beanName')</strong>: chỉ rõ tên Bean cần inject.<br>3. <strong>@Resource(name='beanName')</strong>: dùng tên Bean.<br>4. <strong>List&lt;Interface&gt;</strong>: inject tất cả."},
+    {q:"Các Implicit object trong JSP?", a:"Có 9 implicit objects: request, response, out, session, application, config, pageContext, page, exception. Đây là các đối tượng có sẵn trong JSP mà không cần khai báo."},
+    {q:"Thymeleaf Layout Dialect giải quyết bài toán gì?", a:"Giải quyết bài toán tái sử dụng layout: header, footer, sidebar. Layout Dialect cho phép tạo layout template, các trang con chỉ cần khai báo nội dung phần thay đổi (dùng thẻ layout:decorate, layout:fragment)."},
+    {q:"Biểu thức ${...} và *{...} trong Thymeleaf khác nhau?", a:"- <strong>${...}</strong>: biểu thức variable, truy cập trực tiếp biến trong model (vd: ${user.name}).<br>- <strong>*{...}</strong>: biểu thức selection, truy cập thuộc tính của đối tượng được chọn bởi th:object (vd: *{name} khi th:object='${user}')."},
+    {q:"Luồng xử lý Upload File trong Spring MVC?", a:"1. HTML form với enctype='multipart/form-data', input type='file'.<br>2. Spring MultipartResolver parse request thành MultipartFile.<br>3. Controller nhận @RequestParam MultipartFile file.<br>4. Gọi file.transferTo(new File(path)) để lưu.<br>5. Xử lý validation (kích thước, loại file)."},
+    {q:"th:field thay thế những thuộc tính HTML nào?", a:"th:field thay thế đồng thời cả 2 thuộc tính: id và name (và cả value nếu là input). Ngoài ra nó còn tự động bind dữ liệu và hiển thị lỗi validation."},
+    {q:"Validation fails, làm sao giữ dữ liệu cũ và hiển thị lỗi?", a:"Spring tự động giữ lại dữ liệu cũ trong model attribute. Trong Thymeleaf: th:field để tự động giữ giá trị; th:errors để hiển thị lỗi validation cho từng field hoặc /* để hiển thị tất cả lỗi."},
+    {q:"Các bước tạo Custom Annotation Validator?", a:"1. Tạo annotation với @Constraint(validatedBy = YourValidator.class).<br>2. Tạo class implements ConstraintValidator&lt;YourAnnotation, FieldType&gt;.<br>3. Override isValid() với logic validation.<br>4. Dùng @YourAnnotation trên field cần validate."},
+    {q:"Đưa đối tượng vào Session từ Controller?", a:"Cách 1: Inject HttpServletRequest, gọi request.getSession().setAttribute(key, value).<br>Cách 2: Dùng @SessionAttributes('attrName') ở class level để tự động lưu model attribute vào session.<br>Cách 3: Inject HttpSession trực tiếp vào method."},
+    {q:"Cơ chế Auto-Configuration trong Spring Boot?", a:"@EnableAutoConfiguration kích hoạt auto-config. Spring Boot dùng spring.factories (trong META-INF của các starter JAR) để load các @Configuration classes. Các @ConditionalOnClass, @ConditionalOnMissingBean quyết định config nào được áp dụng dựa trên classpath và cấu hình hiện tại."},
+    {q:"Phân biệt FetchType.LAZY và FetchType.EAGER?", a:"- <strong>LAZY</strong> (khuyến khích): dữ liệu quan hệ chỉ được load khi thực sự truy cập. Tiết kiệm tài nguyên, nhưng có thể gây LazyInitializationException.<br>- <strong>EAGER</strong>: dữ liệu quan hệ được load ngay cùng entity chính bằng JOIN. Tiện nhưng có thể gây N+1 hoặc load quá nhiều dữ liệu không cần."},
+    {q:"Cascade trong Hibernate dùng để làm gì?", a:"Cascade quyết định các thao tác từ entity cha có được tự động lan tới entity con không. VD: CascadeType.ALL: tất cả thao tác (PERSIST, MERGE, REMOVE, REFRESH, DETACH) đều được lan truyền. Khi lưu Order, tự động lưu luôn OrderItems."},
+    {q:"Khác nhau giữa JDBC Transaction và Hibernate Transaction?", a:"- <strong>JDBC Transaction</strong>: dùng Connection.commit()/rollback(), quản lý thủ công.<br>- <strong>Hibernate Transaction</strong>: dùng Session.getTransaction().commit()/rollback(), wrapper trên JDBC + thêm cơ chế cache và dirty checking. Hibernate Transaction cũng hỗ trợ quản lý tự động qua @Transactional."},
+    {q:"@Query trong Spring Data JPA dùng khi nào?", a:"Dùng khi Method Query không đáp ứng được (query quá phức tạp, JOIN nhiều bảng, subquery, native SQL). @Query cho phép viết HQL hoặc native query trực tiếp trên method repository."},
+    {q:"Phân trang (Paging) trong Spring Data JPA?", a:"Repository extends PagingAndSortingRepository hoặc JpaRepository. Method nhận tham số Pageable: Page&lt;User&gt; findAll(Pageable pageable). Tạo Pageable: PageRequest.of(page, size, Sort.by('name')). Kết quả trả về Page chứa nội dung + thông tin phân trang."},
+    {q:"spring.jpa.hibernate.ddl-auto=update làm gì?", a:"Tự động sync schema database với các Entity. Các giá trị: create (drop + tạo mới), update (cập nhật schema, không xóa bảng cũ), create-drop (tạo khi start, xóa khi stop), validate (kiểm tra mapping). 'update' là tiện lợi nhất cho dev, nhưng không khuyến khích dùng ở production."},
+    {q:"session.save() vs session.persist()?", a:"- <strong>save()</strong>: trả về generated ID ngay lập tức (Serializable), INSERT có thể chưa chạy ngay.<br>- <strong>persist()</strong>: void, không trả về ID, thuần JPA. Nó đảm bảo entity ở managed state. persist() sẽ không chạy INSERT nếu gọi bên ngoài transaction."},
+    {q:"DTO Projection giải quyết vấn đề gì?", a:"Giải quyết vấn đề load toàn bộ entity khi chỉ cần một số cột (SELECT * vs SELECT specific columns). DTO Projection (Interface-based hoặc Class-based) cho phép chỉ select các field cần thiết, giảm memory và tăng hiệu năng."},
+    {q:"HttpServletRequest làm nhiệm vụ gì?", a:"Đại diện cho HTTP request từ client trong Java Web. Cung cấp các method để lấy: parameters, headers, cookies, session, URI/URL, method (GET/POST), InputStream, Locale, v.v."},
+    {q:"@Autowired hoạt động dựa trên cơ chế nào?", a:"@Autowired hoạt động dựa trên <strong>byType</strong> injection. Spring sử dụng AutowiredAnnotationBeanPostProcessor để tìm Bean matching type. Nếu có nhiều Bean cùng type, cần @Qualifier để phân biệt."},
+    {q:"Đọc/lấy Cookie từ người dùng trong Controller?", a:"Inject HttpServletRequest, gọi request.getCookies() trả về Cookie[]. Duyệt mảng tìm cookie theo tên. Hoặc dùng @CookieValue('cookieName') String value trên parameter của method Controller."},
+    {q:"Cấu hình ghi log SQL Hibernate xuống console?", a:"spring.jpa.show-sql=true - in câu SQL ra console. spring.jpa.properties.hibernate.format_sql=true - format SQL cho dễ đọc. Để hiển thị cả tham số: logging.level.org.hibernate.SQL=DEBUG và logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE."},
+    {q:"@RestController khác gì @Controller?", a:"@Controller trả về View (JSP/Thymeleaf). @RestController = @Controller + @ResponseBody, trả về dữ liệu (JSON/XML) trực tiếp trong response body. @RestController chủ yếu dùng cho REST API."},
+    {q:"Vòng đời Servlet gồm các phương thức nào?", a:"1. init(ServletConfig): gọi 1 lần khi load.<br>2. service(ServletRequest, ServletResponse): gọi cho mỗi request.<br>3. destroy(): gọi 1 lần khi shutdown.<br>4. getServletConfig(), getServletInfo()."},
+    {q:"Cấu hình đa ngôn ngữ với messages.properties trong Spring MVC?", a:"1. Định nghĩa ReloadableResourceBundleMessageSource bean.<br>2. Tạo file messages.properties (mặc định), messages_vi.properties, messages_en.properties.<br>3. Cấu hình LocaleResolver (SessionLocaleResolver, CookieLocaleResolver).<br>4. Dùng &lt;spring:message&gt; trong JSP hoặc #{...} trong Thymeleaf.<br>5. Optional: thêm LocaleChangeInterceptor để đổi ngôn ngữ qua param."},
+    {q:"LazyInitializationException xảy ra khi nào?", a:"Xảy ra khi truy cập một collection/proxy LAZY khi Hibernate Session đã đóng (thường là ngoài transaction). Giải pháp:<br>1. Dùng @Transactional để kéo dài session.<br>2. Dùng JOIN FETCH trong query.<br>3. Cấu hình spring.jpa.open-in-view=true (mặc định)."},
+    {q:"@Transactional hoạt động dựa trên design pattern nào?", a:"@Transactional hoạt động dựa trên <strong>AOP (Aspect Oriented Programming)</strong> - cụ thể là <strong>Proxy Pattern</strong>. Spring tạo proxy cho Bean, proxy wrap method bằng logic begin-commit-rollback transaction trước và sau khi gọi method thực tế."},
+    {q:"Specification trong Spring Data JPA dùng để làm gì?", a:"Specification (JpaSpecificationExecutor) cho phép xây dựng dynamic query bằng cách kết hợp các điều kiện (Criteria API) một cách linh hoạt. Dùng khi cần filter với nhiều điều kiện tuỳ chọn (search/filter)."}
+  ]},
+  {section:"PHẦN 3: NÂNG CAO", qs:[
+    {q:"DI có những cách nào? Spring khuyến khích cách nào?", a:"3 cách DI:<br>1. <strong>Constructor Injection</strong> (Spring khuyến khích): immutable, đảm bảo dependency không null, dễ test.<br>2. Setter Injection: inject qua setter, có thể thay đổi sau.<br>3. Field Injection: @Autowired trực tiếp trên field, ngắn nhất nhưng khó test."},
+    {q:"Circular Dependency là gì? Cách khắc phục?", a:"Xảy ra khi Bean A cần B và Bean B cần A. Cách khắc phục:<br>1. Tái thiết kế loại bỏ vòng.<br>2. Dùng @Lazy.<br>3. Chuyển sang Setter Injection.<br>4. Dùng @PostConstruct + Setter."},
+    {q:"Prototype Bean inject vào Singleton Bean thì sao?", a:"Nếu inject trực tiếp, Prototype chỉ được tạo 1 lần. Để có instance mới mỗi lần: (1) ObjectFactory&lt;PrototypeBean&gt; / Provider&lt;PrototypeBean&gt;. (2) @Lookup. (3) ScopedProxyMode.TARGET_CLASS."},
+    {q:"Cơ chế Compile của JSP? Tại sao lần đầu chậm?", a:"JSP được compile thành Servlet (file .java -> .class): parse -> tạo servlet source -> compile -> load -> init. Lần đầu chậm vì phải qua tất cả bước này. Các lần sau chỉ chạy _jspService() nếu JSP không thay đổi."},
+    {q:"Phân tích vòng đời một Request trong Spring MVC?", a:"1. Client -> DispatcherServlet (Front Controller).<br>2. HandlerMapping tìm Controller phù hợp.<br>3. Gọi Controller method (Service, Repository).<br>4. Controller trả về ModelAndView / String.<br>5. ViewResolver resolve view.<br>6. View render (JSP/Thymeleaf).<br>7. Response về client."},
+    {q:"Data Binding chuyển đổi từ String HTTP sang Object Java?", a:"Spring dùng Converter SPI và Formatter SPI. DataBinder dùng PropertyEditor (cũ) hoặc Converter (mới). VD: String '2024-01-15' -> Date qua @DateTimeFormat. Có thể đăng ký Converter tùy chỉnh trong WebMvcConfigurer.addFormatters()."},
+    {q:"Xử lý upload file lớn không bị OutOfMemory?", a:"spring.servlet.multipart.file-size-threshold=2KB (file &gt; 2KB lưu temp disk thay vì memory). spring.servlet.multipart.location. Dùng Streaming multipart (Servlet 3.0+) xử lý như stream."},
+    {q:"Nguyên lý hoạt động của Session? HTTP Stateless sao nhận diện user?", a:"Lần đầu: server tạo Session với Session ID duy nhất, gửi về client qua Cookie (JSESSIONID). Các request sau: client tự động gửi Cookie chứa Session ID, server lookup session tương ứng. Session ID là 'phiếu' nhận diện."},
+    {q:"N+1 Select Problem trong Hibernate/ORM?", a:"1 query lấy N parent + với mỗi parent, tự động query child (N query) = 1+N query. VD: SELECT * FROM Users -> với mỗi User, SELECT * FROM Orders WHERE user_id = ?. Gây hiệu năng kém."},
+    {q:"Khắc phục N+1 trong Spring Data JPA?", a:"1. JOIN FETCH: @Query('SELECT u FROM User u JOIN FETCH u.orders').<br>2. @EntityGraph(attributePaths='orders').<br>3. @BatchSize(size=10).<br>4. DTO Projection với JOIN JOIN FETCH và @EntityGraph là phổ biến nhất."},
+    {q:"CascadeType.REMOVE vs orphanRemoval=true?", a:"CascadeType.REMOVE: khi xóa parent, xóa child được cascade. orphanRemoval=true: khi child bị remove khỏi collection (không còn tham chiếu), child tự động bị xóa. orphanRemoval mạnh hơn, theo dõi lifecycle của child trong collection."},
+    {q:"First-Level Cache lưu ở phạm vi nào? Xóa/refresh?", a:"Lưu ở phạm vi <strong>Session</strong> (Persistence Context), mặc định luôn bật. Xóa: session.evict(entity) xóa 1 entity, session.clear() xóa tất cả. Refresh: session.refresh(entity) load lại từ DB."},
+    {q:"Transaction Propagation REQUIRED vs REQUIRES_NEW?", a:"REQUIRED (mặc định): dùng transaction hiện tại, nếu không có thì tạo mới. Mọi method cùng rollback/commit. REQUIRES_NEW: suspend transaction hiện tại, tạo transaction mới độc lập, có thể commit/rollback riêng."},
+    {q:"Transaction Isolation Level giải quyết vấn đề gì?", a:"1. Dirty Read: đọc dữ liệu chưa commit.<br>2. Non-repeatable Read: đọc cùng dữ liệu 2 lần khác nhau.<br>3. Phantom Read: số dòng thay đổi giữa 2 lần đọc.<br>4. Lost Update: 2 transaction cùng update mất dữ liệu.<br>Mức: READ_UNCOMMITTED, READ_COMMITTED, REPEATABLE_READ, SERIALIZABLE."},
+    {q:"Gọi @Transactional từ cùng class thì Transaction không chạy?", a:"Do AOP Proxy: gọi method cùng class là gọi 'this' (không qua proxy). Giải pháp: (1) Inject self-proxy AopContext.currentProxy(). (2) Tách method sang class khác. (3) @EnableAspectJAutoProxy(exposeProxy=true)."},
+    {q:"XSS là gì? Thymeleaf bảo vệ thế nào?", a:"XSS (Cross-Site Scripting) là tấn công injected code độc hại (JavaScript) vào trang web. Thymeleaf tự động escape HTML trong ${...}. Nếu cần HTML thật dùng [(...)] hoặc th:utext (cẩn thận)."},
+    {q:"@ControllerAdvice hoạt động như thế nào?", a:"@ControllerAdvice là interceptor global cho tất cả Controller. @ExceptionHandler bắt exception và trả response phù hợp. Kết hợp Bean Validation: khi @Valid fails -> MethodArgumentNotValidException -> @ExceptionHandler trả về structured error response (JSON)."},
+    {q:"@SpringBootApplication là tập hợp của 3 annotation nào?", a:"@SpringBootApplication = @Configuration (khai báo Bean) + @EnableAutoConfiguration (auto-config) + @ComponentScan (quét component)."},
+    {q:"Không dùng @Transactional, lưu 10 entity trong vòng lặp, lỗi ở record thứ 5?", a:"Mỗi save() là một transaction riêng (auto-commit). Record 1-4 commit thành công, record 5 fail -> 4 record đã lưu, gây trạng thái không nhất quán. Dùng @Transactional để đảm bảo tất cả hoặc không record nào."},
+    {q:"Interface-based Projection có lợi ích gì về hiệu năng?", a:"Chỉ select đúng các field cần thiết thay vì SELECT * (giảm dữ liệu từ DB). Giảm memory usage. Spring Data JPA tối ưu query chỉ lấy các field được khai báo trong interface."},
+    {q:"HttpOnly và Secure cookie có ý nghĩa bảo mật?", a:"HttpOnly: ngăn JavaScript client truy cập cookie (chống XSS). Secure: cookie chỉ gửi qua HTTPS. Cả hai là thuộc tính bảo mật tích cực."},
+    {q:"layout:fragment vs th:replace / th:insert?", a:"layout:fragment: đánh dấu vùng trong layout sẽ được thay thế bởi trang con. th:insert: chèn fragment vào body thẻ cha, giữ nguyên thẻ cha. th:replace: thay thế hoàn toàn thẻ hiện tại bằng fragment."},
+    {q:"Auto-config DataSource hoạt động ra sao?", a:"Spring Boot auto-config DataSource dựa trên @ConditionalOnClass và @ConditionalOnMissingBean. Nếu có H2 -> HikariCP + H2 in-memory. Nếu có MySQL + spring.datasource.url -> MySQL."},
+    {q:"HQL, Native Query, Criteria API dùng khi nào?", a:"HQL: query thông thường, database independence. Native Query: query phức tạp đặc thù DB (window functions, full-text search). Criteria API/Specification: dynamic query nhiều điều kiện tuỳ chọn."},
+    {q:"Đa ngôn ngữ cho thông báo lỗi Bean Validation?", a:"Tạo file ValidationMessages.properties (mặc định), ValidationMessages_vi.properties, với key = annotation.message. Hoặc dùng message={...} trong annotation trỏ tới key trong messages.properties."},
+    {q:"Cấu hình Spring MVC + JSP nhưng vẫn serve file tĩnh?", a:"Cấu hình ResourceHandler: registry.addResourceHandler('/static/**').addResourceLocations('/resources/'). Spring Boot mặc định serve các thư mục /static, /public, /resources, /META-INF/resources."},
+    {q:"Vòng đời Session kết thúc khi nào?", a:"1. Hết timeout (mặc định 30 phút). 2. session.invalidate(). 3. Trình duyệt đóng. 4. Server shutdown. Khi session kết thúc, tất cả attribute được giải phóng."},
+    {q:"Transaction Exception: Checked vs Unchecked?", a:"Mặc định @Transactional chỉ rollback RuntimeException (unchecked). Checked Exception không rollback. Thay đổi: rollbackFor = {SQLException.class}, noRollbackFor = {BusinessException.class}."},
+    {q:"Xem thông tin Spring Boot đang hoạt động?", a:"1. Actuator endpoints: /actuator/health, /actuator/metrics, /actuator/mappings, /actuator/beans.<br>2. Spring Boot Admin.<br>3. VisualVM / JConsole. Cần thêm spring-boot-starter-actuator."},
+    {q:"@SessionAttributes vs @Scope('session')?", a:"@SessionAttributes('attr'): lưu model attribute vào HTTP session tạm thời cho Controller, dùng cho wizard form. @Scope('session') Bean: Bean tồn tại suốt session, mỗi session một instance, inject vào bất kỳ đâu."}
+  ]}
+];
+
+let mode = 'list';
+let currentPart = 0;
+let currentIdx = 0;
+let filtered = [];
+
+function renderList() {
+  const el = document.getElementById('listMode');
+  el.style.display = 'block';
+  let html = '';
+  data.forEach((part, pi) => {
+    const secId = 'sec-' + pi;
+    html += '<div class="section">';
+    html += '<button class="section-header" onclick="toggleSection(' + pi + ')"><span>' + part.section + ' <span class="section-count">' + part.qs.length + ' câu</span></span><span class="arrow">&#x25BC;</span></button>';
+    html += '<div class="section-body" id="' + secId + '">';
+    part.qs.forEach((item, qi) => {
+      const qId = 'q-' + pi + '-' + qi;
+      html += '<div class="question"><button class="q-btn" onclick="toggleAnswer(' + pi + ',' + qi + ')"><span class="num">' + (qi+1) + '</span><span class="q-text">' + item.q + '</span><span class="q-icon">&#x25BC;</span></button>';
+      html += '<div class="answer" id="' + qId + '">' + item.a + '</div></div>';
+    });
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function toggleSection(idx) {
+  const body = document.getElementById('sec-' + idx);
+  const header = body.previousElementSibling;
+  body.classList.toggle('open');
+  header.classList.toggle('open');
+}
+
+function toggleAnswer(pi, qi) {
+  const el = document.getElementById('q-' + pi + '-' + qi);
+  const btn = el.previousElementSibling;
+  el.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.mode-btn')[m === 'list' ? 0 : 1].classList.add('active');
+  document.getElementById('listMode').style.display = m === 'list' ? 'block' : 'none';
+  document.getElementById('flashMode').classList.toggle('active', m === 'flash');
+  document.getElementById('searchBox').style.display = m === 'list' ? 'flex' : 'none';
+  if (m === 'flash') initFlash();
+}
+
+function initFlash() {
+  filtered = [];
+  data.forEach((part, pi) => {
+    part.qs.forEach((item, qi) => {
+      filtered.push({pi, qi, q: item.q, a: item.a, section: part.section});
+    });
+  });
+  currentIdx = 0;
+  showCard();
+}
+
+function applyFlashFilter() {
+  const sec = document.getElementById('fcSection').value;
+  filtered = [];
+  data.forEach((part, pi) => {
+    if (sec !== 'all' && part.section !== sec) return;
+    part.qs.forEach((item, qi) => {
+      filtered.push({pi, qi, q: item.q, a: item.a, section: part.section});
+    });
+  });
+  currentIdx = 0;
+  showCard();
+}
+
+function showCard() {
+  if (filtered.length === 0) return;
+  const item = filtered[currentIdx];
+  const flipBtn = document.getElementById('flipBtn');
+  flipBtn.classList.remove('flipped');
+  document.getElementById('fcSectionLabel').textContent = item.section;
+  document.getElementById('fcNum').textContent = (currentIdx + 1) + ' / ' + filtered.length;
+  document.getElementById('fcQuestion').textContent = item.q;
+  document.getElementById('fcAnswer').innerHTML = item.a;
+  document.getElementById('fcAnswer').classList.remove('show');
+  document.getElementById('fcCounter').textContent = (currentIdx + 1) + ' / ' + filtered.length;
+  document.getElementById('fcPrev').disabled = currentIdx === 0;
+  document.getElementById('fcNext').disabled = currentIdx === filtered.length - 1;
+  document.getElementById('fcProgressBar').style.width = ((currentIdx + 1) / filtered.length * 100) + '%';
+}
+
+function flipCard() {
+  const el = document.getElementById('fcAnswer');
+  const btn = document.getElementById('flipBtn');
+  el.classList.toggle('show');
+  btn.classList.toggle('flipped');
+}
+
+function nextCard() {
+  if (currentIdx < filtered.length - 1) { currentIdx++; showCard(); }
+}
+
+function prevCard() {
+  if (currentIdx > 0) { currentIdx--; showCard(); }
+}
+
+function filterQuestions() {
+  const val = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.querySelectorAll('.section-body').forEach(body => body.classList.add('open'));
+  document.querySelectorAll('.section-header').forEach(h => h.classList.add('open'));
+  document.querySelectorAll('.question').forEach(q => q.style.display = '');
+  if (!val) return;
+  document.querySelectorAll('.question').forEach(q => {
+    const txt = q.textContent.toLowerCase();
+    q.style.display = txt.includes(val) ? '' : 'none';
+  });
+}
+
+window.onload = function() {
+  const sel = document.getElementById('fcSection');
+  data.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.section;
+    opt.textContent = p.section;
+    sel.appendChild(opt);
+  });
+  renderList();
+};
+</script>
+</body>
+</html>
